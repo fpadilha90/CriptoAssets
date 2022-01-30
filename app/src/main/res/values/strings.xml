@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AssetsInfo</string>
+    <string name="explore">Explore Assets</string>
+    <string name="err_network_connection">There is no Network Connection!</string>
+
+</resources>
