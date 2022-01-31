@@ -8,19 +8,28 @@
     tools:cardBackgroundColor="@color/dark"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="3dp">
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/imageGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7"/>
+
         <ImageView
             android:id="@+id/image"
+            app:layout_constraintStart_toStartOf="@id/imageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
 
         <TextView
             android:id="@+id/name"
@@ -41,5 +50,6 @@
             app:layout_constraintStart_toStartOf="@id/name"
             app:layout_constraintTop_toBottomOf="@id/name"
             tools:text="BTC" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

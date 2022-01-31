@@ -1,28 +1,24 @@
 package com.fpadilha90.assetsinfo.ui.ui.assets
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpadilha90.assetsinfo.R
 import com.fpadilha90.domain.model.AssetInfo
+import com.google.android.material.card.MaterialCardView
 
 
 class AssetsAdapter(private var assets: List<AssetInfo>, private val assetClick: OnAssetClick) :
     RecyclerView.Adapter<AssetsAdapter.ViewHolder>() {
 
     class ViewHolder(val context: Context, view: View) : RecyclerView.ViewHolder(view) {
-        val card: CardView = view.findViewById(R.id.card)
+        val card: MaterialCardView = view.findViewById(R.id.card)
         val name: TextView = view.findViewById(R.id.name)
         val symbol: TextView = view.findViewById(R.id.symbol)
         val image: ImageView = view.findViewById(R.id.image)
@@ -39,7 +35,7 @@ class AssetsAdapter(private var assets: List<AssetInfo>, private val assetClick:
         val assetInfo = assets[position]
         holder.name.text = assetInfo.name
         holder.symbol.text = assetInfo.symbol
-        holder.card.setBackgroundColor(Color.parseColor(assetInfo.color))
+        holder.card.setCardBackgroundColor(Color.parseColor(assetInfo.color))
 
         Glide
             .with(holder.context)

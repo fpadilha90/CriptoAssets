@@ -1,19 +1,19 @@
 package com.fpadilha90.data.repository
 
+import com.fpadilha90.data.api.AssetsService
 import com.fpadilha90.data.db.AppDb
 import com.fpadilha90.data.model.dbo.AssetInfoDBO
-import com.fpadilha90.data.model.dto.AssetInfoResponse
+import com.fpadilha90.data.utils.safeApiCall
 import com.fpadilha90.domain.model.AssetInfo
 import com.fpadilha90.domain.repository.AssetsRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import java.lang.Exception
-import java.net.URL
+import kotlinx.coroutines.launch
 
 
-class AssetsRepositoryImpl(private val db: AppDb) : AssetsRepository {
+class AssetsRepositoryImpl(private val db: AppDb, private val service: AssetsService) :
+    AssetsRepository {
 
     override fun fetchAssets(): Flow<List<AssetInfo>> {
         return getAssetsFrom(db.assets().getAll())
@@ -23,7 +23,6 @@ class AssetsRepositoryImpl(private val db: AppDb) : AssetsRepository {
 
     override fun fetchAssets(filter: String): Flow<List<AssetInfo>> {
         return getAssetsFrom(db.assets().get("%$filter%"))
-//            .also { updateAssetsCache() }
     }
 
     private fun getAssetsFrom(query: Flow<List<AssetInfoDBO>>): Flow<List<AssetInfo>> {
@@ -36,28 +35,18 @@ class AssetsRepositoryImpl(private val db: AppDb) : AssetsRepository {
 
     private fun updateAssetsCache() {
         CoroutineScope(Dispatchers.IO).launch {
-            val body = getBodyFrom("https://api.coinbase.com/v2/assets/info")
-
-            if (body.isNotEmpty()) {
-                Json { ignoreUnknownKeys = true }
-                    .decodeFromString<AssetInfoResponse>(body).data
-                    .map { dto ->
+            safeApiCall { service.assetsInfo() }.map { it.data }
+                .map {
+                    it.map { dto ->
                         dto.run { AssetInfoDBO(id, name, symbol, image_url, color, website) }
-                    }.let {
-                        db.runInTransaction {
-                            db.assets().insert(it)
-                        }
                     }
-            }
-
-        }
-    }
-
-    private suspend fun getBodyFrom(url: String): String = withContext(Dispatchers.IO) {
-        try {
-            URL(url).readText()
-        } catch (exception: Exception) {
-            ""
+                }.catch {
+                    //TODO: generic error structure for NetworkConnection
+                }.collect {
+                    db.runInTransaction {
+                        db.assets().insert(it)
+                    }
+                }
         }
     }
 }

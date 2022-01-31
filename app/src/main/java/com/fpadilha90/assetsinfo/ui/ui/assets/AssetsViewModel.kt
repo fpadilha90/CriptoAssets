@@ -2,14 +2,11 @@ package com.fpadilha90.assetsinfo.ui.ui.assets
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.fpadilha90.domain.exception.Failure
 import com.fpadilha90.domain.interactor.FilterAssets
 import com.fpadilha90.domain.interactor.GetAssets
 import com.fpadilha90.domain.interactor.UseCase
 import com.fpadilha90.domain.model.AssetInfo
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

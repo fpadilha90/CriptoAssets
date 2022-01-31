@@ -1,9 +1,8 @@
 package com.fpadilha90.assetsinfo.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.fpadilha90.assetsinfo.R
-import com.fpadilha90.assetsinfo.ui.ui.assets.AssetsFragment
 
 class MainActivity : AppCompatActivity() {
 
