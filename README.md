@@ -1,6 +1,6 @@
 CriptoAssets
 
-Application that displays scrollable list of assets using the respose from CoinBase API
+Application that displays scrollable list of assets using the response from CoinBase API
 
 Code
 Architecture
